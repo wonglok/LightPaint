@@ -11,11 +11,8 @@ import Metal
 
 class BufferProvider {
     var avaliableResourcesSemaphore: DispatchSemaphore
-    // 1
     let inflightBuffersCount: Int
-    // 2
     private var uniformsBuffers: [MTLBuffer]
-    // 3
     private var avaliableBufferIndex: Int = 0
     
     let matrixMemorySize = MemoryLayout<Float>.size * 16

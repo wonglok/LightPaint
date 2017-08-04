@@ -1,5 +1,5 @@
 //
-//  Plane.swift
+//  basic.swift
 //  LightPaint
 //
 //  Created by LOK on 3/8/2017.
@@ -10,35 +10,25 @@ import Foundation
 import Metal
 import MetalKit
 
-class Plane: Renderable{
-    var vertexBuffer: MTLBuffer!
-    var verticesArray: Array<Vertex>!
-    var vertexCount: Int!
+class BasicPipeline {
+    var pipelineState: MTLRenderPipelineState!
     
-    override init () {
-        let A = Vertex(x: -1.0 * 0.5, y:   1.0 * 0.5, z:  0.0, w: 1.0)
-        let B = Vertex(x: -1.0 * 0.5, y:  -1.0 * 0.5, z:  0.0, w: 1.0)
-        let C = Vertex(x:  1.0 * 0.5, y:  -1.0 * 0.5, z:  0.0, w: 1.0)
-        let D = Vertex(x:  1.0 * 0.5, y:   1.0 * 0.5, z:  0.0, w: 1.0)
+    init (device: MTLDevice) {
+        let defaultLibrary = device.makeDefaultLibrary()!
+        let fragmentProgram = defaultLibrary.makeFunction(name: "basic_fragment")
+        let vertexProgram = defaultLibrary.makeFunction(name: "basic_vertex")
         
-        verticesArray = [
-            A,B,C ,A,C,D   //Front
-        ]
-        
-        super.init()
-    }
-    
-    func makeBuffer (device: MTLDevice) {
-        var vertexData = [Float]()
-        for vertex in verticesArray{
-            vertexData += vertex.floatBuffer()
-        }
-        vertexCount = verticesArray.count
         // 2
-        let dataSize = vertexData.count * MemoryLayout.size(ofValue: vertexData[0])
-        try! vertexBuffer = device.makeBuffer(bytes: vertexData, length: dataSize, options: [])
+        let pipelineStateDescriptor = MTLRenderPipelineDescriptor()
+        pipelineStateDescriptor.vertexFunction = vertexProgram
+        pipelineStateDescriptor.fragmentFunction = fragmentProgram
+        pipelineStateDescriptor.colorAttachments[0].pixelFormat = .bgra8Unorm
+        
+        // 3
+        pipelineState = try! device.makeRenderPipelineState(descriptor: pipelineStateDescriptor)
     }
-    func render (commandQueue: MTLCommandQueue, pipelineState: MTLRenderPipelineState, drawable: CAMetalDrawable) {
+    
+    func render (commandQueue: MTLCommandQueue, drawable: CAMetalDrawable, vertexBuffer: MTLBuffer, vertexCount: Int) {
         let renderPassDescriptor = MTLRenderPassDescriptor()
         renderPassDescriptor.colorAttachments[0].texture = drawable.texture
         renderPassDescriptor.colorAttachments[0].loadAction = .clear

@@ -13,16 +13,17 @@
 		E23D423E1F3314AD00F87FE0 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E23D423D1F3314AD00F87FE0 /* Assets.xcassets */; };
 		E23D42411F3314AD00F87FE0 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E23D423F1F3314AD00F87FE0 /* LaunchScreen.storyboard */; };
 		E23D424B1F33171000F87FE0 /* Renderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = E23D424A1F33171000F87FE0 /* Renderer.swift */; };
-		E23D424E1F331AF900F87FE0 /* Plane.swift in Sources */ = {isa = PBXBuildFile; fileRef = E23D424D1F331AF900F87FE0 /* Plane.swift */; };
 		E23D42501F331C4900F87FE0 /* Scene.swift in Sources */ = {isa = PBXBuildFile; fileRef = E23D424F1F331C4900F87FE0 /* Scene.swift */; };
-		E23D42521F331D1C00F87FE0 /* Renderable.swift in Sources */ = {isa = PBXBuildFile; fileRef = E23D42511F331D1C00F87FE0 /* Renderable.swift */; };
-		E23D42551F331D9900F87FE0 /* basic.metal in Sources */ = {isa = PBXBuildFile; fileRef = E23D42541F331D9900F87FE0 /* basic.metal */; };
-		E23D425A1F33208400F87FE0 /* BasicMaterial.swift in Sources */ = {isa = PBXBuildFile; fileRef = E23D42591F33208400F87FE0 /* BasicMaterial.swift */; };
+		E23D42551F331D9900F87FE0 /* BasicShader.metal in Sources */ = {isa = PBXBuildFile; fileRef = E23D42541F331D9900F87FE0 /* BasicShader.metal */; };
+		E23D425A1F33208400F87FE0 /* BasicPipeline.swift in Sources */ = {isa = PBXBuildFile; fileRef = E23D42591F33208400F87FE0 /* BasicPipeline.swift */; };
 		E23D425F1F3324F700F87FE0 /* Vertex.swift in Sources */ = {isa = PBXBuildFile; fileRef = E23D425E1F3324F700F87FE0 /* Vertex.swift */; };
 		E23D42621F33258D00F87FE0 /* BufferProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = E23D42611F33258D00F87FE0 /* BufferProvider.swift */; };
-		E23D42641F333D9E00F87FE0 /* LightPaint.metal in Sources */ = {isa = PBXBuildFile; fileRef = E23D42631F333D9E00F87FE0 /* LightPaint.metal */; };
 		E23D42681F333FA100F87FE0 /* Mat4.swift in Sources */ = {isa = PBXBuildFile; fileRef = E23D42671F333FA100F87FE0 /* Mat4.swift */; };
-		E2575EDF1F3468FC009693AC /* LokCompute in Resources */ = {isa = PBXBuildFile; fileRef = E2575EDE1F3468FC009693AC /* LokCompute */; };
+		E2575EEC1F34AE50009693AC /* PlaneGeometry.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2575EEB1F34AE50009693AC /* PlaneGeometry.swift */; };
+		E2575EF01F34B1D1009693AC /* ParticlePipeline.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2575EEF1F34B1D1009693AC /* ParticlePipeline.swift */; };
+		E2575EF21F34B1EB009693AC /* ParticleShader.metal in Sources */ = {isa = PBXBuildFile; fileRef = E2575EF11F34B1EB009693AC /* ParticleShader.metal */; };
+		E2575EF41F34B3A6009693AC /* Particle.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2575EF31F34B3A6009693AC /* Particle.swift */; };
+		E29A75651F3527F400FF3F32 /* SyncGPU.swift in Sources */ = {isa = PBXBuildFile; fileRef = E29A75641F3527F400FF3F32 /* SyncGPU.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -34,16 +35,17 @@
 		E23D42401F3314AD00F87FE0 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		E23D42421F3314AD00F87FE0 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		E23D424A1F33171000F87FE0 /* Renderer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Renderer.swift; sourceTree = "<group>"; };
-		E23D424D1F331AF900F87FE0 /* Plane.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Plane.swift; sourceTree = "<group>"; };
 		E23D424F1F331C4900F87FE0 /* Scene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Scene.swift; sourceTree = "<group>"; };
-		E23D42511F331D1C00F87FE0 /* Renderable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Renderable.swift; sourceTree = "<group>"; };
-		E23D42541F331D9900F87FE0 /* basic.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; path = basic.metal; sourceTree = "<group>"; };
-		E23D42591F33208400F87FE0 /* BasicMaterial.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BasicMaterial.swift; sourceTree = "<group>"; };
+		E23D42541F331D9900F87FE0 /* BasicShader.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; path = BasicShader.metal; sourceTree = "<group>"; };
+		E23D42591F33208400F87FE0 /* BasicPipeline.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BasicPipeline.swift; sourceTree = "<group>"; };
 		E23D425E1F3324F700F87FE0 /* Vertex.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Vertex.swift; sourceTree = "<group>"; };
 		E23D42611F33258D00F87FE0 /* BufferProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BufferProvider.swift; sourceTree = "<group>"; };
-		E23D42631F333D9E00F87FE0 /* LightPaint.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; path = LightPaint.metal; sourceTree = "<group>"; };
 		E23D42671F333FA100F87FE0 /* Mat4.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Mat4.swift; sourceTree = "<group>"; };
-		E2575EDE1F3468FC009693AC /* LokCompute */ = {isa = PBXFileReference; lastKnownFileType = folder; name = LokCompute; path = ../../../LokLokMetalCompute/LokLokMetalCompute/LokCompute; sourceTree = "<group>"; };
+		E2575EEB1F34AE50009693AC /* PlaneGeometry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaneGeometry.swift; sourceTree = "<group>"; };
+		E2575EEF1F34B1D1009693AC /* ParticlePipeline.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParticlePipeline.swift; sourceTree = "<group>"; };
+		E2575EF11F34B1EB009693AC /* ParticleShader.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; path = ParticleShader.metal; sourceTree = "<group>"; };
+		E2575EF31F34B3A6009693AC /* Particle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Particle.swift; sourceTree = "<group>"; };
+		E29A75641F3527F400FF3F32 /* SyncGPU.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SyncGPU.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -90,11 +92,9 @@
 		E23D42481F3316F900F87FE0 /* Metal */ = {
 			isa = PBXGroup;
 			children = (
-				E2575EDE1F3468FC009693AC /* LokCompute */,
 				E23D42661F333F8E00F87FE0 /* Math */,
 				E23D42601F33257900F87FE0 /* Optimise */,
 				E23D42581F33207500F87FE0 /* Material */,
-				E23D42531F331D7A00F87FE0 /* Shaders */,
 				E23D424C1F331ABD00F87FE0 /* Renderable */,
 				E23D42491F33170300F87FE0 /* Renderer */,
 			);
@@ -113,26 +113,16 @@
 		E23D424C1F331ABD00F87FE0 /* Renderable */ = {
 			isa = PBXGroup;
 			children = (
-				E23D424D1F331AF900F87FE0 /* Plane.swift */,
-				E23D42511F331D1C00F87FE0 /* Renderable.swift */,
-				E23D425E1F3324F700F87FE0 /* Vertex.swift */,
+				E2575EEB1F34AE50009693AC /* PlaneGeometry.swift */,
 			);
 			path = Renderable;
-			sourceTree = "<group>";
-		};
-		E23D42531F331D7A00F87FE0 /* Shaders */ = {
-			isa = PBXGroup;
-			children = (
-				E23D42541F331D9900F87FE0 /* basic.metal */,
-				E23D42631F333D9E00F87FE0 /* LightPaint.metal */,
-			);
-			path = Shaders;
 			sourceTree = "<group>";
 		};
 		E23D42581F33207500F87FE0 /* Material */ = {
 			isa = PBXGroup;
 			children = (
-				E23D42591F33208400F87FE0 /* BasicMaterial.swift */,
+				E2575EEE1F34B18A009693AC /* Particles */,
+				E2575EED1F34AEFA009693AC /* Basic */,
 			);
 			path = Material;
 			sourceTree = "<group>";
@@ -141,6 +131,7 @@
 			isa = PBXGroup;
 			children = (
 				E23D42611F33258D00F87FE0 /* BufferProvider.swift */,
+				E29A75641F3527F400FF3F32 /* SyncGPU.swift */,
 			);
 			path = Optimise;
 			sourceTree = "<group>";
@@ -151,6 +142,26 @@
 				E23D42671F333FA100F87FE0 /* Mat4.swift */,
 			);
 			path = Math;
+			sourceTree = "<group>";
+		};
+		E2575EED1F34AEFA009693AC /* Basic */ = {
+			isa = PBXGroup;
+			children = (
+				E23D425E1F3324F700F87FE0 /* Vertex.swift */,
+				E23D42541F331D9900F87FE0 /* BasicShader.metal */,
+				E23D42591F33208400F87FE0 /* BasicPipeline.swift */,
+			);
+			path = Basic;
+			sourceTree = "<group>";
+		};
+		E2575EEE1F34B18A009693AC /* Particles */ = {
+			isa = PBXGroup;
+			children = (
+				E2575EF31F34B3A6009693AC /* Particle.swift */,
+				E2575EEF1F34B1D1009693AC /* ParticlePipeline.swift */,
+				E2575EF11F34B1EB009693AC /* ParticleShader.metal */,
+			);
+			path = Particles;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -212,7 +223,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				E23D42411F3314AD00F87FE0 /* LaunchScreen.storyboard in Resources */,
-				E2575EDF1F3468FC009693AC /* LokCompute in Resources */,
 				E23D423E1F3314AD00F87FE0 /* Assets.xcassets in Resources */,
 				E23D423C1F3314AD00F87FE0 /* Main.storyboard in Resources */,
 			);
@@ -225,18 +235,20 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				E23D425A1F33208400F87FE0 /* BasicMaterial.swift in Sources */,
+				E2575EF41F34B3A6009693AC /* Particle.swift in Sources */,
+				E23D425A1F33208400F87FE0 /* BasicPipeline.swift in Sources */,
 				E23D42621F33258D00F87FE0 /* BufferProvider.swift in Sources */,
 				E23D42391F3314AD00F87FE0 /* ViewController.swift in Sources */,
-				E23D42551F331D9900F87FE0 /* basic.metal in Sources */,
+				E23D42551F331D9900F87FE0 /* BasicShader.metal in Sources */,
+				E2575EF21F34B1EB009693AC /* ParticleShader.metal in Sources */,
 				E23D425F1F3324F700F87FE0 /* Vertex.swift in Sources */,
 				E23D424B1F33171000F87FE0 /* Renderer.swift in Sources */,
 				E23D42501F331C4900F87FE0 /* Scene.swift in Sources */,
-				E23D42641F333D9E00F87FE0 /* LightPaint.metal in Sources */,
-				E23D42521F331D1C00F87FE0 /* Renderable.swift in Sources */,
-				E23D424E1F331AF900F87FE0 /* Plane.swift in Sources */,
+				E29A75651F3527F400FF3F32 /* SyncGPU.swift in Sources */,
 				E23D42371F3314AD00F87FE0 /* AppDelegate.swift in Sources */,
+				E2575EF01F34B1D1009693AC /* ParticlePipeline.swift in Sources */,
 				E23D42681F333FA100F87FE0 /* Mat4.swift in Sources */,
+				E2575EEC1F34AE50009693AC /* PlaneGeometry.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

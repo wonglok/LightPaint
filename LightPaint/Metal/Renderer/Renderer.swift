@@ -22,7 +22,7 @@ class Renderer: NSObject, MTKViewDelegate {
         self.view = view
         self.commandQueue = device.makeCommandQueue()
         
-        scene = BasicLightPaint(device: device)
+        scene = ParticleScene(device: device)
     }
     
     // MARK: - Delegate

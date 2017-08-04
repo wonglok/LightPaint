@@ -15,17 +15,28 @@ class Scene {
 }
 
 class BasicLightPaint: Scene {
-    var basicMaterial: BasicMaterial!
+    var basicPipeline: BasicPipeline!
     var plane: Plane!
     
     init (device: MTLDevice) {
-        plane = Plane()
-        plane.makeBuffer(device: device)
-        basicMaterial = BasicMaterial(device: device)
+        plane = Plane(device: device)
+        basicPipeline = BasicPipeline(device: device)
     }
     
     override func render (renderer: Renderer, drawable: CAMetalDrawable) {
-        plane.render(commandQueue: renderer.commandQueue, pipelineState: basicMaterial.pipelineState, drawable: drawable)
+       basicPipeline.render(commandQueue: renderer.commandQueue, drawable: drawable, vertexBuffer: plane.vertexBuffer, vertexCount: plane.vertexCount)
+    }
+}
+
+class ParticleScene: Scene {
+    var pipeline: ParticlePipeline!
+    
+    init (device: MTLDevice) {
+        pipeline = ParticlePipeline(device: device)
+    }
+    
+    override func render (renderer: Renderer, drawable: CAMetalDrawable) {
+        pipeline.render(commandQueue: renderer.commandQueue, drawable: drawable)
     }
 }
 
