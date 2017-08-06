@@ -16,6 +16,10 @@ struct Uniforms{
     float4x4 projectionMatrix;
 };
 
+struct UITouchState {
+    bool isTouching;
+};
+
 struct Particle
 {
     packed_float3 position;
@@ -45,35 +49,50 @@ kernel void particleRendererShader(
                                    device Particle *inParticle [[ buffer(0) ]],
                                    device Particle *outParticle [[ buffer(1) ]],
                                    const device Particle &mouse [[ buffer(2) ]],
-                                   const device Uniforms &uniforms [[ buffer(3) ]],
+                                   const device UITouchState &uiTouchState [[ buffer(3) ]],
                                    uint id [[thread_position_in_grid]])
 {
     bool isHead = (id % 2 == 0);
     Particle thisParticle = inParticle[id];
     
-    
-    if (isHead) {
-        float3 diff = thisParticle.position - (mouse.position);
+    if (uiTouchState.isTouching) {
+        if (isHead) {
+            float3 diff;
+            
+            diff = thisParticle.position - (mouse.position);
+            
+            float distance = constrain(length(diff), 10.0, 70.0);
+            float strength = thisParticle.mass * mouse.mass / (distance * distance);
+            
+            diff = normalize(diff);
+            diff = diff * strength * -0.083;
+            
+            thisParticle.velocity = thisParticle.velocity + diff;
+            thisParticle.position = thisParticle.position + thisParticle.velocity;
 
-        float distance = constrain(length(diff), 10.0, 70.0);
-        float strength = thisParticle.mass * mouse.mass / (distance * distance);
-        
-        diff = normalize(diff);
-        diff = diff * strength * -0.083;
-        
-        thisParticle.velocity = thisParticle.velocity + diff;
-        thisParticle.position = thisParticle.position + thisParticle.velocity;
-
-        if (thisParticle.position[0] > 1.0 || thisParticle.position[0] < -1.0 ) {
-            thisParticle = slowDown(thisParticle);
-        } else if (thisParticle.position[1] > 1.0 || thisParticle.position[1] < -1.0 ) {
-            thisParticle = slowDown(thisParticle);
-        } else if (thisParticle.position[2] > 1.0 || thisParticle.position[2] < -1.0 ) {
-            thisParticle = slowDown(thisParticle);
+            if (thisParticle.position[0] > 1.0 || thisParticle.position[0] < -1.0 ) {
+                thisParticle = slowDown(thisParticle);
+            } else if (thisParticle.position[1] > 1.0 || thisParticle.position[1] < -1.0 ) {
+                thisParticle = slowDown(thisParticle);
+            } else if (thisParticle.position[2] > 1.0 || thisParticle.position[2] < -1.0 ) {
+                thisParticle = slowDown(thisParticle);
+            }
+        } else {
+            Particle headParticle = inParticle[id-1];
+            thisParticle.position = headParticle.position - headParticle.velocity * 2.5;
         }
     } else {
-        Particle headParticle = inParticle[id-1];
-        thisParticle.position = headParticle.position - headParticle.velocity * 2.5;
+        if (isHead) {
+            float3 diff;
+            
+            diff = (thisParticle.startPos) - thisParticle.position;
+            
+            thisParticle.velocity = thisParticle.velocity * 0.99 + diff / 500;
+            thisParticle.position = thisParticle.position + thisParticle.velocity;
+        } else {
+            Particle headParticle = inParticle[id-1];
+            thisParticle.position = headParticle.position - headParticle.velocity * 2.5;
+        }
     }
     
     

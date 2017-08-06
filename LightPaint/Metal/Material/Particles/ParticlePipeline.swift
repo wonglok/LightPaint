@@ -44,6 +44,9 @@ class ParticlePipeline {
         setupMatrix(view: view)
     }
     
+    var uiTouchState: UITouchState = UITouchState()
+    var uiTouchStateBuff: MTLBuffer!
+    
     var bufferSize: Int!
     var count: Int!
     var mouseParticle: Particle!
@@ -74,6 +77,10 @@ class ParticlePipeline {
         eachParticle.sX = (Float(arc4random_uniform(100000000)) / Float(100000000)) * 2.0 - 1.0
         eachParticle.sY = (Float(arc4random_uniform(100000000)) / Float(100000000)) * 2.0 - 1.0
         eachParticle.sZ = (Float(arc4random_uniform(100000000)) / Float(100000000)) * 2.0 - 1.0
+        
+        eachParticle.sX *= 1.5;
+        eachParticle.sY *= 1.5;
+        eachParticle.sZ *= 1.5;
         return eachParticle
     }
     
@@ -85,6 +92,8 @@ class ParticlePipeline {
         mouseParticle.mass = 2.5
         
         mouseVectorBuffer = device.makeBuffer(bytes: &mouseParticle, length: MemoryLayout.size(ofValue: mouseParticle), options: [])
+        
+        uiTouchStateBuff = device.makeBuffer(bytes: &uiTouchState, length: MemoryLayout.size(ofValue: uiTouchState), options: [])
         
         count = 1024 * 32
         
@@ -167,11 +176,13 @@ class ParticlePipeline {
         if let commandBuffer = commandQueue.makeCommandBuffer() {
             if let computeEncoder = commandBuffer.makeComputeCommandEncoder() {
                 
+                memcpy(uiTouchStateBuff.contents(), &uiTouchState, MemoryLayout.size(ofValue: uiTouchState))
                 
                 computeEncoder.setComputePipelineState(computePipelineState!)
                 computeEncoder.setBuffer(nowInBuff, offset: 0, index: 0)
                 computeEncoder.setBuffer(nowOutBuff, offset: 0, index: 1)
                 computeEncoder.setBuffer(mouseVectorBuffer, offset: 0, index: 2)
+                computeEncoder.setBuffer(uiTouchStateBuff, offset: 0, index: 3)
                 
                 let threadGroupCount = MTLSize(width:32, height:1, depth:1)
                 let threadGroups = MTLSize(width:(count + 31) / 32, height:1, depth:1)

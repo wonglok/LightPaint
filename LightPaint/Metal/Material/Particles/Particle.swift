@@ -27,4 +27,8 @@ struct Particle
     //    var padding_1: Float = 0.0
 }
 
+struct UITouchState {
+    var isTouching: Bool = true
+}
+
 

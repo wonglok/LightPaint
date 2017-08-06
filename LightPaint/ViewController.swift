@@ -43,7 +43,9 @@ class ViewController: UIViewController {
     }
     @objc func tap(tapGesture: UITapGestureRecognizer) {
         if (tapGesture.state == UIGestureRecognizerState.recognized) {
-//            renderer?.scene?.pipeline?.resetAllParticles()
+            renderer.scene.pipeline.uiTouchState.isTouching = true
+        } else if (tapGesture.state == UIGestureRecognizerState.ended) {
+            renderer.scene.pipeline.uiTouchState.isTouching = false
         }
     }
     
@@ -63,9 +65,14 @@ class ViewController: UIViewController {
             renderer?.t1x = cX
             renderer?.t1y = cY
             
+            renderer.scene.pipeline.uiTouchState.isTouching = true
+            
             lastPanLocation = pointInView
         } else if panGesture.state == UIGestureRecognizerState.began {
             lastPanLocation = panGesture.location(in: self.view)
+            renderer.scene.pipeline.uiTouchState.isTouching = true
+        } else if panGesture.state == UIGestureRecognizerState.ended {
+            renderer.scene.pipeline.uiTouchState.isTouching = false
         }
     }
 
