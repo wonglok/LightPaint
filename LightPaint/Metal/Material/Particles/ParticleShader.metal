@@ -58,9 +58,10 @@ kernel void particleRendererShader(
     if (uiTouchState.isTouching) {
         if (isHead) {
             float3 diff;
-            
+
             diff = thisParticle.position - (mouse.position);
-            
+//            diff = thisParticle.position - float3(0.0);
+
             float distance = constrain(length(diff), 10.0, 70.0);
             float strength = thisParticle.mass * mouse.mass / (distance * distance);
             
@@ -84,7 +85,9 @@ kernel void particleRendererShader(
     } else {
         if (isHead) {
             float3 diff;
+            
             diff = (thisParticle.startPos) - thisParticle.position;
+//            diff = thisParticle.position - float3(0.0);
 
             thisParticle.velocity = thisParticle.velocity * 0.99 + diff / 500;
             thisParticle.position = thisParticle.position + thisParticle.velocity;

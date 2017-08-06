@@ -52,12 +52,13 @@ class ViewController: UIViewController {
     @objc func pan(panGesture: UIPanGestureRecognizer){
         if panGesture.state == UIGestureRecognizerState.changed {
             
-            
             let pointInView = panGesture.location(in: self.view)
             // 3
+
 //            let xDelta = Float((lastPanLocation.x - pointInView.x)/self.view.bounds.width) * panSensivity
 //            let yDelta = Float((lastPanLocation.y - pointInView.y)/self.view.bounds.height) * panSensivity
-
+//            renderer.scene.pipeline.uiTouchState.rY += xDelta
+//            renderer.scene.pipeline.uiTouchState.rX += -yDelta
             
             let cX = Float(pointInView.x / self.view.bounds.width) * 2.0 - 1.0
             let cY = Float(pointInView.y / self.view.bounds.height) * 2.0 - 1.0

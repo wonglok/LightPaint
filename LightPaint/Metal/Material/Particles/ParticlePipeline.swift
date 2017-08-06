@@ -19,6 +19,7 @@ class ParticlePipeline {
     var syncGPU = SyncGPU(numOfBuffer: 2)
     
     init (device: MTLDevice, view: UIView) {
+        // 1
         let defaultLibrary = device.makeDefaultLibrary()!
         let fragmentProgram = defaultLibrary.makeFunction(name: "particle_fragment")
         let vertexProgram = defaultLibrary.makeFunction(name: "particle_vertex")
@@ -215,6 +216,7 @@ class ParticlePipeline {
                 renderEncoder.setRenderPipelineState(renderPipelineState)
                 
                 var modelViewMatrix = matrix_identity_float4x4
+                modelViewMatrix.rotateAroundX(0.0, y: 0.0, z: 0.0)
                 modelViewMatrix.multiplyLeft(worldModelMatrix)
                 
                 let uniformBuffer = bufferProvider.nextUniformsBuffer(projectionMatrix: projectionMatrix, modelViewMatrix: modelViewMatrix)

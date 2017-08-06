@@ -158,8 +158,8 @@
 			isa = PBXGroup;
 			children = (
 				E2575EF31F34B3A6009693AC /* Particle.swift */,
-				E2575EEF1F34B1D1009693AC /* ParticlePipeline.swift */,
 				E2575EF11F34B1EB009693AC /* ParticleShader.metal */,
+				E2575EEF1F34B1D1009693AC /* ParticlePipeline.swift */,
 			);
 			path = Particles;
 			sourceTree = "<group>";
