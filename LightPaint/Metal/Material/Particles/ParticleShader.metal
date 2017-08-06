@@ -84,9 +84,8 @@ kernel void particleRendererShader(
     } else {
         if (isHead) {
             float3 diff;
-            
             diff = (thisParticle.startPos) - thisParticle.position;
-            
+
             thisParticle.velocity = thisParticle.velocity * 0.99 + diff / 500;
             thisParticle.position = thisParticle.position + thisParticle.velocity;
         } else {
