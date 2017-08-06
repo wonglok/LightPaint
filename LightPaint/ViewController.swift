@@ -27,6 +27,46 @@ class ViewController: UIViewController {
         mtkView.delegate = renderer
         mtkView.preferredFramesPerSecond = 120
         mtkView.clearColor = MTLClearColor(red: 1.0, green: 0.0, blue: 0.0, alpha: 1.0)
+        setupGestures()
+    }
+    
+    let panSensivity:Float = 5
+    var lastPanLocation: CGPoint!
+    
+    func setupGestures(){
+        let tap = UITapGestureRecognizer(target: self, action: #selector(ViewController.tap))
+        tap.numberOfTapsRequired = 2;
+        self.view.addGestureRecognizer(tap)
+        
+        let pan = UIPanGestureRecognizer(target: self, action: #selector(ViewController.pan))
+        self.view.addGestureRecognizer(pan)
+    }
+    @objc func tap(tapGesture: UITapGestureRecognizer) {
+        if (tapGesture.state == UIGestureRecognizerState.recognized) {
+//            renderer?.scene?.pipeline?.resetAllParticles()
+        }
+    }
+    
+    @objc func pan(panGesture: UIPanGestureRecognizer){
+        if panGesture.state == UIGestureRecognizerState.changed {
+            
+            
+            let pointInView = panGesture.location(in: self.view)
+            // 3
+//            let xDelta = Float((lastPanLocation.x - pointInView.x)/self.view.bounds.width) * panSensivity
+//            let yDelta = Float((lastPanLocation.y - pointInView.y)/self.view.bounds.height) * panSensivity
+
+            
+            let cX = Float(pointInView.x / self.view.bounds.width) * 2.0 - 1.0
+            let cY = Float(pointInView.y / self.view.bounds.height) * 2.0 - 1.0
+            
+            renderer?.t1x = cX
+            renderer?.t1y = cY
+            
+            lastPanLocation = pointInView
+        } else if panGesture.state == UIGestureRecognizerState.began {
+            lastPanLocation = panGesture.location(in: self.view)
+        }
     }
 
     override func didReceiveMemoryWarning() {

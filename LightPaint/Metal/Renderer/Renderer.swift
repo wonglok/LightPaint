@@ -15,19 +15,22 @@ class Renderer: NSObject, MTKViewDelegate {
     var device : MTLDevice!
     var view : UIView!
     var commandQueue: MTLCommandQueue!
-    var scene: Scene!
+    var scene: ParticleScene!
+    var t1x: Float = 0.0
+    var t1y: Float = 0.0
 
     init (device: MTLDevice, view: UIView) {
         self.device = device
         self.view = view
         self.commandQueue = device.makeCommandQueue()
         
-        scene = ParticleScene(device: device)
+        scene = ParticleScene(device: device, view: view)
     }
     
     // MARK: - Delegate
     func mtkView(_ view: MTKView, drawableSizeWillChange size: CGSize) {
         view.autoResizeDrawable = true
+        scene.resize(view: view)
     }
     func draw(in view: MTKView) {
         guard   let drawable = view.currentDrawable,

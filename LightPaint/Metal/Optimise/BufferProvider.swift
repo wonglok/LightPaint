@@ -10,40 +10,24 @@ import Foundation
 import Metal
 
 class BufferProvider {
-    var avaliableResourcesSemaphore: DispatchSemaphore
     let inflightBuffersCount: Int
     private var uniformsBuffers: [MTLBuffer]
     private var avaliableBufferIndex: Int = 0
     
     let matrixMemorySize = MemoryLayout<Float>.size * 16
     
-    init(device:MTLDevice, inflightBuffersCount: Int, sizeOfUniformsBuffer: Int) {
+    init(device:MTLDevice, inflightBuffersCount: Int) {
         
         self.inflightBuffersCount = inflightBuffersCount
         uniformsBuffers = [MTLBuffer]()
+        
+        let sizeOfUniformsBuffer = MemoryLayout<Float>.size * float4x4.numberOfElements() * 2
         
         for _ in 0...inflightBuffersCount-1 {
             let uniformsBuffer = device.makeBuffer(length: sizeOfUniformsBuffer, options: [])
             uniformsBuffers.append(uniformsBuffer!)
         }
         
-        avaliableResourcesSemaphore = DispatchSemaphore(value: inflightBuffersCount)
-    }
-    
-    deinit{
-        for _ in 0...self.inflightBuffersCount{
-            self.avaliableResourcesSemaphore.signal()
-        }
-    }
-
-    func configTryWait () {
-        _ = avaliableResourcesSemaphore.wait(timeout: DispatchTime.distantFuture)
-    }
-    
-    func configResourceRestore (commandBuffer: MTLCommandBuffer) {
-        commandBuffer.addCompletedHandler { (_) in
-            self.avaliableResourcesSemaphore.signal()
-        }
     }
     
     func nextUniformsBuffer(projectionMatrix: float4x4, modelViewMatrix: float4x4) -> MTLBuffer {
@@ -58,7 +42,7 @@ class BufferProvider {
         let bufferPointer = buffer.contents()
         
         // 3
-        memcpy(bufferPointer,                                &modelViewMatrix,  matrixMemorySize)
+        memcpy(bufferPointer,                                    &modelViewMatrix,  matrixMemorySize)
         memcpy(bufferPointer.advanced(by: matrixMemorySize * 1), &projectionMatrix, matrixMemorySize)
         
         // 4

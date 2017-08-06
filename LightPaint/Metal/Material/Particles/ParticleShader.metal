@@ -11,14 +11,17 @@
 using namespace metal;
 
 
+struct Uniforms{
+    float4x4 modelMatrix;
+    float4x4 projectionMatrix;
+};
 
 struct Particle
 {
     packed_float3 position;
     packed_float3 velocity;
-    packed_float3 acceleration;
-    
     float mass;
+    packed_float3 startPos;
 };
 
 float constrain(float val, float min, float max) {
@@ -31,63 +34,101 @@ float constrain(float val, float min, float max) {
     }
 }
 
+Particle slowDown(Particle thisParticle) {
+    thisParticle.velocity[0] *= 0.995;
+    thisParticle.velocity[1] *= 0.995;
+    thisParticle.velocity[2] *= 0.995;
+    return thisParticle;
+}
+
 kernel void particleRendererShader(
                                    device Particle *inParticle [[ buffer(0) ]],
                                    device Particle *outParticle [[ buffer(1) ]],
                                    const device Particle &mouse [[ buffer(2) ]],
+                                   const device Uniforms &uniforms [[ buffer(3) ]],
                                    uint id [[thread_position_in_grid]])
 {
+    bool isHead = (id % 2 == 0);
     Particle thisParticle = inParticle[id];
     
-    //outParticle[id].position = thisParticle.position + thisParticle.velocity;
     
-//    //calc force
-//    float mass = thisParticle.mass;
-//    float3 force = thisParticle.position - mouse.position;
-//    float distance = length(force);
-//    float d = constrain(distance, 10.0, 50.0);
-//    force = normalize(force);
-//    float strength = 1.0 * mass * mouse.mass / (d * d);
-//    force = force * strength;
-//
-//    // apply force
-//    float3 f = force / thisParticle.mass;
-//    thisParticle.acceleration = thisParticle.acceleration + f;
-//
-//    // update position
-//    thisParticle.velocity = thisParticle.velocity + thisParticle.acceleration;
-//    thisParticle.position = thisParticle.position + thisParticle.velocity;
-//    thisParticle.acceleration = thisParticle.acceleration * 0.0;
+    if (isHead) {
+        float3 diff = thisParticle.position - (mouse.position);
+
+        float distance = constrain(length(diff), 10.0, 70.0);
+        float strength = thisParticle.mass * mouse.mass / (distance * distance);
+        
+        diff = normalize(diff);
+        diff = diff * strength * -0.083;
+        
+        thisParticle.velocity = thisParticle.velocity + diff;
+        thisParticle.position = thisParticle.position + thisParticle.velocity;
+
+        if (thisParticle.position[0] > 1.0 || thisParticle.position[0] < -1.0 ) {
+            thisParticle = slowDown(thisParticle);
+        } else if (thisParticle.position[1] > 1.0 || thisParticle.position[1] < -1.0 ) {
+            thisParticle = slowDown(thisParticle);
+        } else if (thisParticle.position[2] > 1.0 || thisParticle.position[2] < -1.0 ) {
+            thisParticle = slowDown(thisParticle);
+        }
+    } else {
+        Particle headParticle = inParticle[id-1];
+        thisParticle.position = headParticle.position - headParticle.velocity * 2.5;
+    }
     
     
     //mass
     outParticle[id].position = thisParticle.position;
     outParticle[id].velocity = thisParticle.velocity;
-    outParticle[id].acceleration = thisParticle.acceleration;
     outParticle[id].mass = thisParticle.mass;
 }
 
 struct VertexOut {
-    float4 position[[position]];
-    float pointsize[[point_size]];
+    float4 position [[position]];
+    float pointsize [[point_size]];
+    float3 color;
 };
 
 vertex VertexOut particle_vertex(                           // 1
                            device Particle *inParticle [[ buffer(0) ]], // 2
+                           const device Uniforms &uniforms [[ buffer(1) ]],
                            unsigned int id [[ vertex_id ]]) {                 // 3
     
     
+    float4x4 mv_Matrix = uniforms.modelMatrix;
+    float4x4 proj_Matrix = uniforms.projectionMatrix;
+    
+    Particle thisParticle = inParticle[id];
     VertexOut VertexOut;
     
-    VertexOut.position = float4(inParticle[id].position, 1.0);
-    VertexOut.pointsize = 5.0;
+    VertexOut.position = proj_Matrix * mv_Matrix * float4(thisParticle.position, 1.0);
+    VertexOut.pointsize = 1.0;
+    VertexOut.color = thisParticle.velocity;
     
     return VertexOut;              // 4
 }
 
 
-fragment half4 particle_fragment() {
-    return half4(1.0, 0.0, 1.0, 1.0);
+fragment half4 particle_fragment(
+                                 VertexOut         interpolated       [[stage_in]]
+                                 ) {
+    
+    interpolated.color *= 100.0;
+    
+    if (interpolated.color.x < 0.5) {
+        interpolated.color.x += 0.35;
+    }
+    if (interpolated.color.y < 0.5) {
+        interpolated.color.y += 0.35;
+    }
+    if (interpolated.color.z < 0.5) {
+        interpolated.color.z += 0.35;
+    }
+    
+    return half4(
+                 interpolated.color.x,
+                 interpolated.color.y,
+                 interpolated.color.z, 1.0);
 }
 
 

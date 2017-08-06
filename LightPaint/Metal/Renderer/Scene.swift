@@ -31,11 +31,16 @@ class BasicLightPaint: Scene {
 class ParticleScene: Scene {
     var pipeline: ParticlePipeline!
     
-    init (device: MTLDevice) {
-        pipeline = ParticlePipeline(device: device)
+    init (device: MTLDevice, view: UIView) {
+        pipeline = ParticlePipeline(device: device, view: view)
+    }
+    
+    func resize (view: UIView) {
+        pipeline.resize(view: view)
     }
     
     override func render (renderer: Renderer, drawable: CAMetalDrawable) {
+        pipeline.updateMouse(x: Float(renderer.t1x), y: Float(renderer.t1y))
         pipeline.render(commandQueue: renderer.commandQueue, drawable: drawable)
     }
 }
